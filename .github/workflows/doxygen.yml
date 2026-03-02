@@ -2,7 +2,7 @@ name: Generate Docs
 
 on:
   push:
-    branches: [ test-runner-id ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
