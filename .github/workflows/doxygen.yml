@@ -24,6 +24,11 @@ jobs:
       - name: Generate Docs
         run: doxygen Doxyfile
 
+      - name: Prepate versioned docs
+        run: |
+          mkdir -p output/html/${{ github.run_id }}
+          mv output/html/* output/html/${{ github.run_id }}/
+
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
