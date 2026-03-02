@@ -1,0 +1,6 @@
+[Bb]uild
+output/
+*.o
+*.obj
+*.so
+main
