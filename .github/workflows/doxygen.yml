@@ -26,13 +26,13 @@ jobs:
 
       - name: Prepate versioned docs
         run: |
-          mkdir -p output/html/${{ github.run_id }}
-          mv output/html/* output/html/${{ github.run_id }}/
+          mkdir -p final_output/html/${{ github.run_id }}
+          mv output/html/* final_output/html/${{ github.run_id }}/
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: output/html
+          path: final_output/html
 
   deploy:
     needs: build-docs
