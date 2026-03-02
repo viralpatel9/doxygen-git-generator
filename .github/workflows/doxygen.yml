@@ -2,7 +2,7 @@ name: Generate Docs
 
 on:
   push:
-    branches: [ main ]
+    branches: [ test-runner-id ]
   workflow_dispatch:
 
 permissions:
@@ -22,22 +22,34 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
 
       - name: Generate Docs
-        run: doxygen Doxyfile
+        run: |
+          # Create run-specific folder
+          RUN_DIR="output/${GITHUB_RUN_ID}"
+          mkdir -p $RUN_DIR
+
+          # Run doxygen
+          doxygen Doxyfile
+
+          # Move generated HTML to run-specific folder
+          mv output/html/* $RUN_DIR/
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: output/html
+          path: output
 
   deploy:
     needs: build-docs
     runs-on: ubuntu-latest
 
     environment:
-      name: github-pages_${{ github.run_id }}
-      url: ${{ steps.deploy.outputs.page_url }}_${{ github.run_id }}
+      name: github-pages
 
     steps:
-      - name: Deploy to Pages
-        id: deploy
+      - id: deploy
         uses: actions/deploy-pages@v4
+
+      - name: Show Unique Docs URL
+        run: |
+          echo "Docs deployed for this run at:"
+          echo "https://${{ github.repository_owner }}.github.io/${{ github.repository }}/$GITHUB_RUN_ID/"
