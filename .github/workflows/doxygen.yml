@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment:
-      name: github-pages_${{ github.run_id }}
+      name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}/${{ github.run_id }}
 
     steps:
